@@ -5,30 +5,36 @@ import { motion, useInView } from 'framer-motion';
 import { useRef } from 'react';
 
 const FeaturesSection = styled.section`
-  padding: 6rem 2rem;
-  background-color: #fff;
+  padding: clamp(3rem, 6vw, 6rem) clamp(1rem, 3vw, 2rem);
+  background-color: #f7f7f7;
   font-family: var(--font-poppins);
 `;
 
 const Container = styled.div`
   max-width: 1400px;
   margin: 0 auto;
+  padding: 0 clamp(0.5rem, 2vw, 2rem);
+
+  @media (max-width: 768px) {
+    padding: 0 0.1rem;
+  }
 `;
 
 const Header = styled.div`
   text-align: center;
-  margin-bottom: 4rem;
+  margin-bottom: clamp(2.5rem, 5vw, 4rem);
   position: relative;
+  padding: 0 clamp(1rem, 3vw, 2rem);
 `;
 
 const Title = styled(motion.h2)`
-  font-size: 3.5rem;
+  font-size: clamp(2.25rem, 5vw, 3.5rem);
   font-weight: 600;
   text-align: center;
-  margin-bottom: 1rem;
+  margin-bottom: clamp(0.75rem, 2vw, 1rem);
   color: #171717;
   letter-spacing: -0.04em;
-  margin-top: 2rem;
+  margin-top: clamp(1rem, 3vw, 2rem);
   line-height: 1.1;
   font-family: var(--font-poppins);
 
@@ -40,36 +46,69 @@ const Title = styled(motion.h2)`
     -webkit-text-fill-color: transparent;
   }
 
+  @media (max-width: 1024px) {
+    font-size: 3rem;
+    padding: 0 1rem;
+  }
+
   @media (max-width: 768px) {
     font-size: 2.5rem;
+    padding: 0;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 2.25rem;
+    margin-bottom: 1rem;
   }
 `;
 
 const Subtitle = styled(motion.p)`
-  font-size: 1.25rem;
+  font-size: clamp(1rem, 1.5vw, 1.25rem);
   color: #000000;
   letter-spacing: -0.03em;
   font-family: var(--font-poppins);
+  max-width: 600px;
+  margin: 0 auto;
+  line-height: 1.5;
+
+  @media (max-width: 768px) {
+    font-size: 1.1rem;
+    padding: 0 1rem;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 1rem;
+  }
 `;
 
 const Grid = styled.div`
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 1.5rem;
-  padding: 1rem 4rem;
+  gap: clamp(1rem, 2vw, 1.5rem);
+  padding: clamp(0.5rem, 2vw, 1rem) clamp(1rem, 4vw, 4rem);
+
+  @media (max-width: 1200px) {
+    padding: 1rem clamp(1rem, 3vw, 2rem);
+    gap: 1.25rem;
+  }
 
   @media (max-width: 1024px) {
     grid-template-columns: repeat(2, 1fr);
+    padding: 1rem;
+    gap: 1rem;
   }
 
-  @media (max-width: 768px) {
+  @media (max-width: 640px) {
     grid-template-columns: 1fr;
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 1rem 0.5rem;
   }
 `;
 
 const FeatureCard = styled(motion.div)`
   background-color: #ffffff;
-  padding: 2rem;
+  padding: clamp(1.5rem, 3vw, 2rem);
   border-radius: 1.25rem;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
   display: flex;
@@ -91,13 +130,21 @@ const FeatureCard = styled(motion.div)`
   &:hover::before {
     opacity: 1;
   }
+
+  @media (max-width: 1024px) {
+    padding: 1.75rem;
+  }
+
+  @media (max-width: 640px) {
+    padding: 1.5rem;
+  }
 `;
 
 const TitleRow = styled(motion.div)`
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  margin-bottom: 0.75rem;
+  gap: clamp(0.375rem, 1vw, 0.5rem);
+  margin-bottom: clamp(0.5rem, 1.5vw, 0.75rem);
 `;
 
 const IconWrapper = styled(motion.div)`
@@ -105,29 +152,49 @@ const IconWrapper = styled(motion.div)`
   align-items: center;
   
   span {
-    font-size: 1.5rem;
+    font-size: clamp(1.25rem, 2vw, 1.5rem);
     transform: scale(0.8);
     line-height: 1;
     display: inline-block;
   }
+
+  @media (max-width: 640px) {
+    span {
+      font-size: 1.25rem;
+    }
+  }
 `;
 
 const FeatureTitle = styled.h3`
-  font-size: 1.33rem;
+  font-size: clamp(1.15rem, 1.5vw, 1.33rem);
   font-weight: 600;
   color: #263644;
   letter-spacing: -0.02em;
   margin: 0;
   font-family: var(--font-poppins);
+
+  @media (max-width: 640px) {
+    font-size: 1.2rem;
+  }
 `;
 
 const FeatureDescription = styled.p`
   color: #666;
   line-height: 1.5;
-  font-size: 1rem;
+  font-size: clamp(0.9rem, 1.2vw, 1rem);
   font-weight: 500;
   margin: 0;
   font-family: var(--font-poppins);
+  max-width: 300px;
+  margin: 0 auto;
+
+  @media (max-width: 1024px) {
+    font-size: 0.95rem;
+  }
+
+  @media (max-width: 640px) {
+    font-size: 0.9rem;
+  }
 `;
 
 const Features = () => {

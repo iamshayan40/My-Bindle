@@ -7,13 +7,25 @@ import gsap from "gsap";
 
 const HeroContainer = styled.div`
   background: #e74f45;
-  min-height: 100vh;
+  min-height: 100vh; 
   width: 100%;
   display: flex;
   align-items: center;
-  padding: 2rem;
+  padding: clamp(1rem, 3vw, 2rem);
   position: relative;
   isolation: isolate;
+
+  @media (max-width: 1024px) {
+    padding: 2rem;
+    min-height: auto;
+    padding-top: 8rem;
+    padding-bottom: 4rem;
+  }
+
+  @media (max-width: 480px) {
+    padding-top: 8rem;
+    padding-bottom: 2rem;
+  }
 `;
 
 const ContentWrapper = styled.div`
@@ -23,14 +35,19 @@ const ContentWrapper = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 6rem;
-  padding-left: 2rem;
+  gap: clamp(2rem, 6vw, 6rem);
+  padding-left: clamp(1rem, 3vw, 2rem);
 
-  @media (max-width: 768px) {
+  @media (max-width: 1024px) {
+    gap: 3rem;
+    padding: 0 1rem;
     flex-direction: column;
     text-align: center;
-    padding-left: 0;
-    gap: 3rem;
+  }
+
+  @media (max-width: 768px) {
+    padding: 0;
+    gap: 2rem;
   }
 `;
 
@@ -38,39 +55,75 @@ const TextContent = styled.div`
   flex: 1;
   color: white;
   max-width: 700px;
-  padding-right: 2rem;
+  padding-right: clamp(1rem, 3vw, 2rem);
+
+  @media (max-width: 1200px) {
+    max-width: 600px;
+  }
+
+  @media (max-width: 1024px) {
+    padding-right: 0;
+    padding: 0 2rem;
+    max-width: 720px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
 
   @media (max-width: 768px) {
-    padding-right: 0;
+    padding: 0 1rem;
   }
 `;
 
 const Title = styled.h1`
-  font-size: 4rem;
+  font-size: clamp(2.5rem, 5vw, 4rem);
   font-weight: 600;
-  margin-bottom: 1rem;
+  margin-bottom: clamp(0.75rem, 2vw, 1rem);
   line-height: 1.1;
   letter-spacing: -0.02em;
 
-  @media (max-width: 768px) {
+  @media (max-width: 1200px) {
+    font-size: clamp(2.25rem, 4vw, 3.5rem);
+  }
+
+  @media (max-width: 1024px) {
     font-size: 3rem;
+    margin-bottom: 1.5rem;
+    max-width: 600px;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 2.25rem;
+    margin-bottom: 2rem;
   }
 `;
 
 const Description = styled.p`
-  font-size: 1.15rem;
+  font-size: clamp(1rem, 1.5vw, 1.15rem);
   line-height: 1.5;
-  margin-bottom: 2rem;
+  margin-bottom: clamp(1.5rem, 3vw, 2rem);
   max-width: 600px;
   letter-spacing: 0.01em;
+
+  @media (max-width: 1024px) {
+    font-size: 1.1rem;
+    margin-bottom: 2rem;
+    max-width: 540px;
+  }
+
+  @media (max-width: 768px) {
+    margin-left: auto;
+    margin-right: auto;
+    font-size: 1rem;
+  }
 `;
 
 const GetStartedButton = styled.button`
   background-color: white;
   color: #e74f45;
-  font-size: 1.125rem;
+  font-size: clamp(1rem, 1.5vw, 1.125rem);
   font-weight: 500;
-  padding: 1rem 2.5rem;
+  padding: clamp(0.875rem, 2vw, 1rem) clamp(2rem, 3vw, 2.5rem);
   border: none;
   border-radius: 12px;
   cursor: pointer;
@@ -80,6 +133,7 @@ const GetStartedButton = styled.button`
   overflow: hidden;
   z-index: 1;
   backdrop-filter: blur(5px);
+  white-space: nowrap;
 
   &:before {
     content: "";
@@ -148,6 +202,14 @@ const GetStartedButton = styled.button`
 
   @media (max-width: 768px) {
     margin-top: 0.5rem;
+    padding: 0.875rem 2rem;
+    font-size: 1rem;
+  }
+
+  @media (max-width: 480px) {
+    padding: 0.75rem 1.75rem;
+    width: 100%;
+    max-width: 280px;
   }
 `;
 
@@ -157,15 +219,29 @@ const ImageContainer = styled.div`
   justify-content: center;
   align-items: center;
   position: relative;
-  min-height: 600px;
-  margin-right: 5rem;
+  min-height: clamp(400px, 50vh, 600px);
+  margin-right: clamp(2rem, 5vw, 5rem);
   perspective: 1500px;
   z-index: 1;
 
+  @media (max-width: 1200px) {
+    margin-right: clamp(1rem, 3vw, 3rem);
+  }
+
+  @media (max-width: 1024px) {
+    min-height: 500px;
+    margin-right: 0;
+    width: 100%;
+    max-width: 600px;
+    margin-top: 2rem;
+  }
+
   @media (max-width: 768px) {
     min-height: 400px;
-    margin-right: 0;
-    margin-top: 2rem;
+  }
+
+  @media (max-width: 480px) {
+    min-height: 350px;
   }
 `;
 
@@ -174,13 +250,13 @@ const EmojiIcon = styled.div<{ top: string; left: string }>`
   top: ${(props) => props.top};
   left: ${(props) => props.left};
   background-color: white;
-  width: 23px;
-  height: 23px;
+  width: clamp(20px, 2.5vw, 23px);
+  height: clamp(20px, 2.5vw, 23px);
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 14px;
+  font-size: clamp(12px, 1.5vw, 14px);
   box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
   z-index: 2;
 
@@ -192,30 +268,32 @@ const EmojiIcon = styled.div<{ top: string; left: string }>`
 `;
 
 const PhoneImage = styled(Image)`
-  width: 480px !important;
-  height: 710px !important;
+  width: clamp(300px, 40vw, 480px) !important;
+  height: clamp(450px, 60vw, 710px) !important;
   object-fit: contain;
   position: relative;
-  margin-top: 60px;
-  margin-bottom: -180px;
-  visibility: visible;
-  opacity: 0;
-  transform: scale(0.8);
-  will-change: transform, opacity;
-  z-index: 10;
-  transform-origin: center center;
-  filter: drop-shadow(0 10px 15px rgba(231, 79, 69, 0.1));
-  transition: filter 0.3s ease;
+  margin-top: clamp(30px, 4vw, 60px);
+  margin-bottom: clamp(-120px, -15vw, -180px);
 
-  &:hover {
-    filter: drop-shadow(0 25px 25px rgba(231, 79, 69, 0.2));
+  @media (max-width: 1024px) {
+    width: clamp(320px, 50vw, 420px) !important;
+    height: clamp(480px, 75vw, 630px) !important;
+    margin-top: 30px;
+    margin-bottom: -120px;
   }
 
   @media (max-width: 768px) {
-    width: 320px !important;
-    height: auto !important;
-    margin-top: 32px;
+    width: clamp(280px, 80vw, 400px) !important;
+    height: clamp(420px, 120vw, 600px) !important;
+    margin-top: 20px;
     margin-bottom: -100px;
+  }
+
+  @media (max-width: 480px) {
+    width: 280px !important;
+    height: 420px !important;
+    margin-top: 10px;
+    margin-bottom: -80px;
   }
 `;
 
@@ -231,9 +309,27 @@ const LogoContainer = styled.div`
   align-items: center;
 
   @media (max-width: 768px) {
-    width: 160px;
+    width: 180px;
     height: 40px;
-    top: 1rem;
+    top: 2rem;
+  }
+`;
+
+const LogoImage = styled(Image)`
+  position: absolute;
+  top: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  width: auto !important;
+  height: auto !important;
+  z-index: 2;
+
+  @media (max-width: 1024px) {
+    top: 2.5rem;
+  }
+
+  @media (max-width: 480px) {
+    top: 3rem;
   }
 `;
 
