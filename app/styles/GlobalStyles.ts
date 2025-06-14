@@ -12,7 +12,7 @@ const GlobalStyles = createGlobalStyle`
 
   .emoji {
   font-family: "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", "Android Emoji", sans-serif;
-  font-size: 2rem; /* Adjust as needed */
+  font-size: 2rem; 
 }
 
 

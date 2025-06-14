@@ -1,8 +1,6 @@
 "use client";
 import styled from "styled-components";
-import Image from "next/image"; // Import Image component for Next.js optimized images
-import { useEffect, useRef } from "react";
-import gsap from "gsap";
+import Image from "next/image";
 
 const DonateSection = styled.section`
   background-color: #ff594f;
@@ -16,7 +14,7 @@ const DonateSection = styled.section`
   max-width: 1400px;
   margin: 5rem auto;
   position: relative;
-  overflow: hidden; // 🔥 prevent image spill
+  overflow: hidden;
   background-image: linear-gradient(
       90deg,
       rgba(255, 255, 255, 0.05) 1px,
@@ -58,8 +56,6 @@ const DonateSection = styled.section`
     margin: 2rem 1rem;
   }
 `;
-
-
 
 const ContentColumn = styled.div`
   flex: 1;
@@ -112,7 +108,7 @@ const Description = styled.p`
   margin-left: -0.7rem;
 
   @media (max-width: 1024px) {
-    max-width: 600px;  
+    max-width: 600px;
     font-size: 1rem;
     margin-bottom: 2rem;
   }
@@ -151,7 +147,7 @@ const DonateButton = styled.button`
   }
 
   &:before {
-    content: '';
+    content: "";
     position: absolute;
     top: 0;
     left: -100%;
@@ -184,7 +180,7 @@ const ImageColumn = styled.div`
   position: relative;
   min-height: 280px;
   width: 100%;
-  max-width: 600px; // 🔒 restrict container width
+  max-width: 600px;
   margin-top: 1rem;
 
   @media (min-width: 1280px) {
@@ -208,7 +204,6 @@ const ImageColumn = styled.div`
   }
 `;
 
-
 const StyledImage = styled(Image)`
   width: auto;
   height: auto;
@@ -228,41 +223,11 @@ const StyledImage = styled(Image)`
   }
 
   @media (max-width: 480px) {
-    height: 300px; // aur chhoti screen pe aur bhi bada
+    height: 300px;
   }
 `;
 
-
-
 export default function Donate() {
-  const buttonRef = useRef(null);
-
-  useEffect(() => {
-    const tl = gsap.timeline();
-    
-    tl.fromTo(buttonRef.current,
-      {
-        opacity: 0,
-        scale: 0.5,
-        y: 30
-      },
-      {
-        opacity: 1,
-        scale: 1,
-        y: 0,
-        duration: 1,
-        ease: "elastic.out(1.2, 0.5)",
-        boxShadow: "0 0 20px rgba(255,255,255,0.5)",
-        onComplete: () => {
-          gsap.to(buttonRef.current, {
-            boxShadow: "0 5px 15px rgba(231, 79, 69, 0.3)",
-            duration: 1
-          });
-        }
-      }
-    );
-  }, []);
-
   return (
     <DonateSection>
       <ContentColumn>
@@ -275,8 +240,9 @@ export default function Donate() {
           Your generosity can change lives every donation brings hope, support,
           and a brighter future. Give today and make a difference!
         </Description>
-        <DonateButton ref={buttonRef}>Donate Now</DonateButton>
+        <DonateButton>Donate Now</DonateButton>
       </ContentColumn>
+
       <ImageColumn>
         <StyledImage
           src="/Donate Section/donate.svg"

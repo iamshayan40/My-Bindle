@@ -4,7 +4,7 @@ const nextConfig = {
     domains: [
       'upload.wikimedia.org',
       'media.licdn.com',
-      'png.pngtree.com', // ✅ Add this
+      'png.pngtree.com', 
     ],
   },
 };

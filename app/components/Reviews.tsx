@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import styled from "styled-components";
+import { motion } from "framer-motion";
 
 // ----------- DATA -----------
 interface TestimonialData {
@@ -25,7 +26,7 @@ const testimonials: TestimonialData[] = [
   {
     id: 2,
     stars: 5,
-    text: "The perfect blend of fun and functionality! I've made so many new friends and found amazing content. It’s the only platform I check every day now.",
+    text: "The perfect blend of fun and functionality! I've made so many new friends and found amazing content. It's the only platform I check every day now.",
     name: "Lucas T",
     location: "Brazil",
     image: "/client-images/2.avif",
@@ -80,6 +81,7 @@ const testimonials: TestimonialData[] = [
   },
 ];
 
+// ------------- STYLED COMPONENTS -------------
 const SectionContainer = styled.section`
   background-color: rgba(247, 247, 247, 0.94);
   padding: 2rem 4rem;
@@ -116,10 +118,10 @@ const CardsContainer = styled.div`
 `;
 
 interface TestimonialCardProps {
-  isFaded?: boolean;
+  $isFaded?: boolean;
 }
 
-const TestimonialCard = styled.div<TestimonialCardProps>`
+const TestimonialCard = styled(motion.div)<TestimonialCardProps>`
   background: rgb(231, 231, 231);
   border-radius: 15px;
   padding: 1rem;
@@ -129,13 +131,19 @@ const TestimonialCard = styled.div<TestimonialCardProps>`
   text-align: left;
   position: relative;
   box-sizing: border-box;
+  transition: all 0.3s ease;
 
   ${(props) =>
-    props.isFaded &&
+    props.$isFaded &&
     `
     mask-image: linear-gradient(to bottom, black 30%, transparent 100%);
     -webkit-mask-image: linear-gradient(to bottom, black 30%, transparent 100%);
   `}
+
+  &:hover {
+    transform: scale(1.03);
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.15);
+  }
 `;
 
 const StarsContainer = styled.div`
@@ -209,14 +217,36 @@ const ImageWrapper = styled.div`
   flex-shrink: 0;
 `;
 
+// ------------ ANIMATION VARIANTS ------------
+const containerVariants = {
+  hidden: {},
+  visible: {
+    transition: {
+      staggerChildren: 0.2,
+    },
+  },
+};
+
+const cardVariants = {
+  hidden: { opacity: 0, y: 40 },
+  visible: { 
+    opacity: 1, 
+    y: 0, 
+    transition: { 
+      duration: 0.6, 
+      ease: "easeOut" as const 
+    } 
+  },
+};
+
+// -------------- COMPONENT -------------------
 const Testimonial: React.FC = () => {
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
     const handleResize = () => {
-      setIsMobile(window.innerWidth <= 900); // tab and mobile
+      setIsMobile(window.innerWidth <= 900);
     };
-
     handleResize();
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
@@ -229,40 +259,49 @@ const Testimonial: React.FC = () => {
   return (
     <SectionContainer>
       <SectionTitle>What Our Users Say</SectionTitle>
-      <CardsContainer>
-        {visibleTestimonials.map((t, i) => (
-          <TestimonialCard
-            key={t.id}
-            isFaded={i === 6 || i === 7}
-            style={
-              isMobile
-                ? {}
-                : i === 6
-                ? { gridColumn: "1 / 2" }
-                : i === 7
-                ? { gridColumn: "3 / 4" }
-                : {}
-            }
-          >
-            <StarsContainer>{"★".repeat(t.stars)}</StarsContainer>
-            <TestimonialText>{t.text}</TestimonialText>
-            <UserInfoSection>
-              <ImageWrapper>
-                <Image
-                  src={t.image}
-                  alt={t.name}
-                  fill
-                  style={{ objectFit: "cover" }}
-                />
-              </ImageWrapper>
-              <UserDetails>
-                <UserName>{t.name}</UserName>
-                <UserLocation>{t.location}</UserLocation>
-              </UserDetails>
-            </UserInfoSection>
-          </TestimonialCard>
-        ))}
-      </CardsContainer>
+
+      <motion.div
+        variants={containerVariants}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.2 }}
+      >
+        <CardsContainer>
+          {visibleTestimonials.map((t, i) => (
+            <TestimonialCard
+              key={t.id}
+              variants={cardVariants}
+              $isFaded={i === 6 || i === 7}
+              style={
+                isMobile
+                  ? {}
+                  : i === 6
+                  ? { gridColumn: "1 / 2" }
+                  : i === 7
+                  ? { gridColumn: "3 / 4" }
+                  : {}
+              }
+            >
+              <StarsContainer>{"★".repeat(t.stars)}</StarsContainer>
+              <TestimonialText>{t.text}</TestimonialText>
+              <UserInfoSection>
+                <ImageWrapper>
+                  <Image
+                    src={t.image}
+                    alt={t.name}
+                    fill
+                    style={{ objectFit: "cover" }}
+                  />
+                </ImageWrapper>
+                <UserDetails>
+                  <UserName>{t.name}</UserName>
+                  <UserLocation>{t.location}</UserLocation>
+                </UserDetails>
+              </UserInfoSection>
+            </TestimonialCard>
+          ))}
+        </CardsContainer>
+      </motion.div>
 
       <div
         style={{

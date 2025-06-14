@@ -14,6 +14,7 @@ const HeroContainer = styled.div`
   padding: clamp(1rem, 3vw, 2rem);
   position: relative;
   isolation: isolate;
+  opacity: 0;
 
   @media (max-width: 1024px) {
     padding: 2rem;
@@ -396,134 +397,42 @@ const Hero = () => {
     }
 
     const ctx = gsap.context(() => {
+      // Initial setup - hide everything
+      gsap.set([logoRef.current, titleRef.current, descriptionRef.current, 
+                buttonRef.current, phoneRef.current, emoji1Ref.current, emoji2Ref.current], {
+        opacity: 0,
+        y: 50
+      });
+
       const tl = gsap.timeline({ 
-        defaults: { ease: "power3.out" },
-        paused: true 
-      });
-      
-      // Ensure all refs exist before animating
-      if (!logoRef.current || !titleRef.current || !descriptionRef.current || 
-          !buttonRef.current || !phoneRef.current || !containerRef.current) {
-        return;
-      }      // Initial setup - prepare all elements for animation except logo
-      gsap.set([descriptionRef.current, buttonRef.current], {
-        opacity: 0,
-        y: 30
-      });
-      
-      gsap.set(phoneRef.current, {
-        opacity: 0,
-        scale: 0.8,
-        rotation: -5
+        defaults: { ease: "power3.out" }
       });
 
-      // Make sure logo is visible initially
-      gsap.set(logoRef.current, {
+      // First show the container
+      tl.to(containerRef.current, {
         opacity: 1,
-        y: 0
+        duration: 0.5
       });
-      
-      // First, setup the background gradient
-      gsap.set(containerRef.current, {
-        background: 'linear-gradient(120deg, #e74f45 0%, #e74f45 100%)'
-      });
-      
-      tl.fromTo(containerRef.current,
-        {
-          background: 'linear-gradient(120deg, #e74f45 0%, #e74f45 100%)'
-        },
-        {
-          background: 'linear-gradient(120deg, #e74f45 0%, #ff6b61 100%)',
-          duration: 0.8,
-          ease: "power1.inOut"
-        });      // Logo animation with bounce - faster
-      tl.from(logoRef.current, {
-        y: -30,
-        opacity: 0,
-        duration: 0.6,
-        ease: "back.out(2)"
-      });      // Title animation with awesome effects
-      const spans = titleRef.current.getElementsByTagName('span');
-      if (spans.length > 0) {
-        tl.fromTo(spans, 
-          {
-            opacity: 0,
-            scale: 0.5,
-            y: 50,
-            rotationX: -45,
-            transformOrigin: "50% 50% -50"
-          },
-          {
-            opacity: 1,
-            scale: 1,
-            y: 0,
-            rotationX: 0,
-            duration: 0.8,
-            stagger: 0.15,
-            ease: "elastic.out(1, 0.75)"
-          }, "-=0.2");
-      }
 
-      // Description animation with reveal effect
-      tl.to(descriptionRef.current, {
+      // Then animate everything together
+      tl.to([logoRef.current, titleRef.current, descriptionRef.current, 
+             buttonRef.current, phoneRef.current, emoji1Ref.current, emoji2Ref.current], {
         opacity: 1,
         y: 0,
         duration: 1,
-        ease: "power4.out"
-      }, "-=0.6");
-
-      // Button animation with pop and glow
-      tl.fromTo(buttonRef.current,
-        {
-          opacity: 0,
-          scale: 0.5,
-          y: 30
-        },
-        {
-          opacity: 1,
-          scale: 1,
-          y: 0,
-          duration: 1,
-          ease: "elastic.out(1.2, 0.5)",
-          boxShadow: "0 0 20px rgba(255,255,255,0.5)",
-          onComplete: () => {
-            gsap.to(buttonRef.current, {
-              boxShadow: "0 5px 15px rgba(231, 79, 69, 0.3)",
-              duration: 1
-            });
-          }
-        }
-      );
-
-      // Phone animation with floating effect
-      tl.to(phoneRef.current, {
-        opacity: 1,
-        scale: 1,
-        rotation: 0,
-        duration: 1.5,
+        stagger: 0.1,
         ease: "power2.out"
-      }, "-=1")
-      .to(phoneRef.current, {
+      });
+
+      // Add floating animation to phone after everything is visible
+      tl.to(phoneRef.current, {
         y: "10px",
         rotation: 1,
         duration: 2,
         repeat: -1,
         yoyo: true,
         ease: "power1.inOut"
-      });
-
-      // Emoji animations
-      if (emoji1Ref.current && emoji2Ref.current) {
-        tl.from([emoji1Ref.current, emoji2Ref.current], {
-          opacity: 0,
-          scale: 0,
-          duration: 0.6,
-          stagger: 0.2,
-          ease: "back.out(1.7)",
-        }, "-=0.7");      }
-
-      // Play the timeline immediately
-      tl.play();
+      }, "-=0.5");
     });
 
     return () => {
