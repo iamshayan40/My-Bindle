@@ -247,10 +247,38 @@ const StyledImage = styled(Image)`
   }
 
   @media (max-width: 480px) {
-    height: 300px;
+    height: 250px;
   }
 `;
 
+const DevelopedByText = styled.div`
+  position: absolute;
+  bottom: 0.75rem; /* Adjust as needed to position it accurately at the bottom */
+  width: 100%;
+  text-align: start;
+  color: white; /* For "Developed By" */
+  font-size: 1rem; /* Adjust as needed */
+  font-family: var(--font-poppins); /* Use the same font as the rest of the site */
+  z-index: 2; /* Ensure it's above other elements if needed */
+  font-weight: 100px;
+
+  a {
+    color: #ffeb3b; /* A yellow color for "DevShayan" */
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.3s ease;
+
+    &:hover {
+      color: #ffd700; /* A slightly different yellow on hover for visual feedback */
+    }
+  }
+
+  @media (max-width: 1024px) {
+    bottom: 0.5rem; /* Adjust for smaller screens */
+    font-size: 0.8rem;
+    left: 0.7rem;
+  }
+`;
 
 export default function Donate() {
   return (
@@ -306,6 +334,12 @@ export default function Donate() {
           priority
         />
       </ImageColumn>
+      <DevelopedByText>
+        Developed By -{" "}
+        <a href="https://portfolio-devshayan.vercel.app/" target="_blank" rel="noopener noreferrer">
+          DevShayan
+        </a>
+      </DevelopedByText>
     </DonateSection>
   );
 }
