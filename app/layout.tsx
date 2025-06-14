@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
 import GlobalStyles from "./styles/GlobalStyles";
 import StyledComponentsRegistry from "./registry";
+import Preloader from "./components/Preloader";
 import "./globals.css";
 
 const poppins = Poppins({
@@ -25,7 +26,8 @@ export default function RootLayout({
       <body className={`${poppins.variable}`}>
         <StyledComponentsRegistry>
           <GlobalStyles />
-          {children}
+          <Preloader />
+          <main>{children}</main>
         </StyledComponentsRegistry>
       </body>
     </html>
