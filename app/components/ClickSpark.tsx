@@ -1,7 +1,7 @@
 "use client";
 
 import styled from 'styled-components';
-import { motion, useInView, useScroll, useTransform } from 'framer-motion';
+import { motion, useInView } from 'framer-motion';
 import { useRef } from 'react';
 import Image from 'next/image';
 
@@ -48,7 +48,7 @@ const Container = styled.div`
 const ImageSection = styled(motion.div)`
   flex: 1;
   position: relative;
-  min-height: clamp(400px, 50vh, 600px);
+  min-height: clamp(400px, 48vh, 580px);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -189,6 +189,7 @@ const FeatureTitle = styled.h3`
   color: #171717;
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: clamp(0.5rem, 1vw, 0.75rem);
   margin: 0;
   position: relative;
@@ -233,28 +234,23 @@ const FeatureCard = styled(motion.div)`
   gap: clamp(0.375rem, 0.75vw, 0.5rem);
   position: relative;
   isolation: isolate;
-  overflow: hidden;
-  transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
   cursor: pointer;
-  transform-style: preserve-3d;
   
   &:before {
     content: '';
     position: absolute;
-    inset: -2px;
+    inset: 0;
     border-radius: inherit;
-    background: conic-gradient(
-      from 0deg at 50% 50%,
-      #E9665C,
-      #FF9B64,
-      #FFB171,
-      #7C3AED,
-      #3B82F6,
-      #E9665C
+    background: linear-gradient(135deg, 
+      rgba(233, 102, 92, 0.08),
+      rgba(255, 155, 100, 0.06),
+      rgba(255, 177, 113, 0.03),
+      transparent
     );
     opacity: 0;
     z-index: -2;
-    transition: opacity 0.4s ease;
+    transition: opacity 0.3s ease;
   }
 
   &:after {
@@ -262,43 +258,18 @@ const FeatureCard = styled(motion.div)`
     position: absolute;
     inset: 1px;
     border-radius: calc(1rem - 1px);
-    background: rgba(255, 255, 255, 0.9);
+    background: rgba(255, 255, 255, 0.95);
     z-index: -1;
     transition: all 0.4s ease;
   }
 
   &:hover {
-    transform: perspective(1000px) translateZ(30px) rotateX(2deg);
-    box-shadow: 
-      0 20px 40px rgba(0, 0, 0, 0.1),
-      0 5px 15px rgba(231, 79, 69, 0.1);
-  }
-
-  &:hover:before {
-    opacity: 1;
-    animation: spin 4s linear infinite;
-  }
-
-  &:hover:after {
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(10px);
-  }
-
-  &:hover ${FeatureTitle} {
-    transform: translateZ(20px);
-    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  }
-
-  &:hover ${FeatureDescription} {
-    transform: translateZ(15px);
-  }
-
-  @keyframes spin {
-    from {
-      transform: rotate(0deg);
-    }
-    to {
-      transform: rotate(360deg);
+    box-shadow: 0 8px 20px 0 rgba(233,102,92,0.08), 0 2px 8px 0 rgba(0,0,0,0.03);
+    border: 1.5px solid #e9665c20;
+    transform: translateY(-5px) scale(1.01);
+    
+    &::before {
+      opacity: 1;
     }
   }
 
@@ -310,7 +281,8 @@ const FeatureCard = styled(motion.div)`
 const MobileImage = styled(Image)`
   width: auto;
   height: auto;
-  max-width: 100%;
+  max-width: 95%;
+  max-height: 580px;
   object-fit: contain;
 `;
 
@@ -319,13 +291,6 @@ const Features = () => {
   const containerRef = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-10%" });
   
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start end", "end start"]
-  });
-
-  const imageRotate = useTransform(scrollYProgress, [0, 1], [10, -10]);
-  const imageScale = useTransform(scrollYProgress, [0, 0.5, 1], [0.8, 1, 0.8]);
 
   const features = [
     {
@@ -349,26 +314,19 @@ const Features = () => {
     <FeaturesSection ref={ref}>
       <Container ref={containerRef}>
         <ImageSection
-          initial={{ opacity: 0, rotateY: 30, scale: 0.8 }}
-          animate={isInView ? { 
-            opacity: 1, 
-            rotateY: 0, 
-            scale: 1,
+          whileHover={{
+            scale: 1.02,
             transition: {
-              duration: 1.2,
-              ease: [0.16, 1, 0.3, 1]
+              duration: 0.03,
+              ease: "easeInOut"
             }
-          } : {}}
-          style={{ 
-            rotateY: imageRotate,
-            scale: imageScale
           }}
         >
           <MobileImage
             src="/Features Section/2mobiles.svg"
             alt="MyBindle App Interface"
-            width={600}
-            height={700}
+            width={550}
+            height={680}
             priority
             style={{
               filter: 'drop-shadow(0 20px 40px rgba(231, 79, 69, 0.15))'
@@ -377,66 +335,16 @@ const Features = () => {
         </ImageSection>
 
         <ContentSection>
-          <Title
-            initial={{ 
-              opacity: 0,
-              rotateX: -30,
-              y: 50,
-              scale: 0.9
-            }}
-            animate={isInView ? {
-              opacity: 1,
-              rotateX: 0,
-              y: 0,
-              scale: 1,
-              transition: {
-                duration: 1,
-                ease: [0.16, 1, 0.3, 1]
-              }
-            } : {}}
-          >
-            <motion.div
-              initial={{ opacity: 0, x: -30 }}
-              animate={isInView ? {
-                opacity: 1,
-                x: 0,
-                transition: {
-                  duration: 0.8,
-                  delay: 0.2,
-                  ease: [0.16, 1, 0.3, 1]
-                }
-              } : {}}
-            >
+          <Title>
+            <div>
               Where Every Click
-            </motion.div>
-            <motion.div
-              initial={{ opacity: 0, x: 30 }}
-              animate={isInView ? {
-                opacity: 1,
-                x: 0,
-                transition: {
-                  duration: 0.8,
-                  delay: 0.4,
-                  ease: [0.16, 1, 0.3, 1]
-                }
-              } : {}}
-            >
+            </div>
+            <div>
               Sparks a <span>Connection!</span>
-            </motion.div>
+            </div>
           </Title>
 
-          <Description
-            initial={{ opacity: 0, y: 30 }}
-            animate={isInView ? {
-              opacity: 1,
-              y: 0,
-              transition: {
-                duration: 0.8,
-                delay: 0.5,
-                ease: [0.16, 1, 0.3, 1]
-              }
-            } : {}}
-          >
+          <Description>
             A small act of kindness today can create a lifetime of impact for someone in
             need. Give from the heart and change a life!
           </Description>
@@ -445,56 +353,11 @@ const Features = () => {
             {features.map((feature, index) => (
               <FeatureCard
                 key={index}
-                initial={{ 
-                  opacity: 0,
-                  x: -50,
-                  scale: 0.9
-                }}
-                animate={isInView ? {
-                  opacity: 1,
-                  x: 0,
-                  scale: 1,
-                  transition: {
-                    duration: 0.8,
-                    delay: 0.6 + index * 0.15,
-                    ease: [0.16, 1, 0.3, 1]
-                  }
-                } : {}}
-                whileHover={{ 
-                  y: -5,
-                  scale: 1.02,
-                  transition: { 
-                    duration: 0.2,
-                    ease: "easeOut"
-                  }
-                }}
-                whileTap={{ scale: 0.98 }}
               >
                 <FeatureTitle>
-                  <motion.span
-                    className="emoji"
-                    initial={{ scale: 0, rotate: -180 }}
-                    animate={isInView ? {
-                      scale: 1,
-                      rotate: 0,
-                      transition: {
-                        type: "spring",
-                        stiffness: 200,
-                        damping: 15,
-                        delay: 0.8 + index * 0.15
-                      }
-                    } : {}}
-                    whileHover={{
-                      scale: 1.2,
-                      rotate: [0, -10, 10, -5, 5, 0],
-                      transition: {
-                        duration: 0.6,
-                        ease: "easeInOut"
-                      }
-                    }}
-                  >
+                  <span>
                     {feature.icon}
-                  </motion.span>
+                  </span>
                   {feature.title}
                 </FeatureTitle>
                 <FeatureDescription>

@@ -1,9 +1,8 @@
 "use client";
-import React, { useRef } from "react";
+import React from "react";
 import styled from "styled-components";
-import { motion, useInView } from "framer-motion";
 
-const Container = styled(motion.div)`
+const Container = styled.div`
   background: #F7F7F7;
   padding: 0 0 clamp(24px, 4vw, 32px) 0;
   width: 100%;
@@ -16,7 +15,7 @@ const Container = styled(motion.div)`
   }
 `;
 
-const Title = styled(motion.h1)`
+const Title = styled.h1`
   text-align: center;
   font-size: clamp(32px, 4vw, 44px);
   font-weight: 700;
@@ -39,15 +38,15 @@ const Title = styled(motion.h1)`
   @media (max-width: 480px) {
     font-size: 32px;
     letter-spacing: -0.5px;
-    max-width: 300px;
-    margin-left: auto;
-    margin-right: auto;
+    max-width: 100%;
+    margin-left: 0;
+    margin-right: 0;
     margin-top: 0;
     padding: 0;
   }
 `;
 
-const Subtitle = styled(motion.p)`
+const Subtitle = styled.p`
   text-align: center;
   font-size: clamp(15px, 1.5vw, 17px);
   color: #222;
@@ -73,7 +72,7 @@ const Subtitle = styled(motion.p)`
   }
 `;
 
-const StepsRow = styled(motion.div)`
+const StepsRow = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -96,22 +95,20 @@ const StepsRow = styled(motion.div)`
   }
 `;
 
-const Step = styled(motion.div)`
+const Step = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
   min-width: clamp(60px, 8vw, 80px);
 `;
 
-const StepNumber = styled(motion.div)<{ $active?: boolean }>`
+const StepNumber = styled.div<{ $active?: boolean }>`
   font-size: clamp(22px, 2.5vw, 28px);
   font-weight: 600;
   color: ${({ $active }) => ($active ? '#E9665C' : '#181818')};
   font-family: 'Poppins', Arial, sans-serif;
   letter-spacing: 1px;
   margin-bottom: 2px;
-  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-  will-change: transform;
   position: relative;
   
   ${({ $active }) => $active && `
@@ -124,12 +121,6 @@ const StepNumber = styled(motion.div)<{ $active?: boolean }>`
       z-index: -1;
     }
   `}
-  
-  &:hover {
-    transform: scale(1.08);
-    box-shadow: 0 2px 12px 0 rgba(233,102,92,0.10);
-    cursor: pointer;
-  }
 
   @media (max-width: 480px) {
     font-size: 24px;
@@ -154,7 +145,7 @@ const Line = styled.div`
   }
 `;
 
-const CardsRow = styled(motion.div)`
+const CardsRow = styled.div`
   display: flex;
   justify-content: center;
   gap: clamp(16px, 2vw, 24px);
@@ -171,7 +162,7 @@ const CardsRow = styled(motion.div)`
   @media (max-width: 900px) {
     flex-direction: column;
     align-items: center;
-    gap: 18px;
+    gap: 13px;
     margin-top: 8px;
     padding: 0 18px;
   }
@@ -181,7 +172,7 @@ const CardsRow = styled(motion.div)`
   }
 `;
 
-const Card = styled(motion.div)`
+const Card = styled.div`
   background: #fff;
   border-radius: 18px;
   box-shadow: 0 8px 32px 0 rgba(233,102,92,0.10), 0 2px 8px 0 rgba(0,0,0,0.06);
@@ -193,37 +184,15 @@ const Card = styled(motion.div)`
   display: flex;
   flex-direction: column;
   align-items: center;
-  transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
-  will-change: transform;
   position: relative;
   overflow: hidden;
   margin-bottom: 0;
-
-  &::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(135deg, transparent, rgba(233, 102, 92, 0.03), transparent);
-    opacity: 0;
-    transition: opacity 0.3s ease;
-  }
-  
-  &:hover {
-    box-shadow: 0 16px 48px 0 rgba(233,102,92,0.16), 0 2px 8px 0 rgba(0,0,0,0.08);
-    border: 1.5px solid #e9665c33;
-    transform: translateY(-10px) scale(1.035);
-    cursor: pointer;
-    
-    &::before {
-      opacity: 1;
-    }
-  }
 
   @media (max-width: 900px) {
     width: 100%;
     min-width: unset;
     margin-bottom: 0;
-    padding: 20px 12px;
+    padding: 23px 12px;
   }
 `;
 
@@ -234,6 +203,7 @@ const CardTitle = styled.div`
   color: #181818;
   font-family: 'Poppins', Arial, sans-serif;
   position: relative;
+  text-align: center;
 
   @media (max-width: 768px) {
     font-size: 17px;
@@ -277,79 +247,36 @@ const CardDesc = styled.div`
   }
 `;
 
-const containerVariants = {
-  hidden: { opacity: 0, y: 60 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.8 } }
-};
-
-const titleVariants = {
-  hidden: { opacity: 0, y: 30 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.7, delay: 0.1 } }
-};
-
-const subtitleVariants = {
-  hidden: { opacity: 0, y: 30 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.7, delay: 0.25 } }
-};
-
-const stepsRowVariants = {
-  hidden: {},
-  visible: { transition: { staggerChildren: 0.13, delayChildren: 0.4 } }
-};
-
-const stepVariants = {
-  hidden: { opacity: 0, y: 24 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.5 } }
-};
-
-const cardsRowVariants = {
-  hidden: {},
-  visible: { transition: { staggerChildren: 0.16, delayChildren: 0.7 } }
-};
-
-const cardVariants = {
-  hidden: { opacity: 0, y: 32, scale: 0.98 },
-  visible: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.6 } }
-};
-
 const Install: React.FC = () => {
-  const ref = useRef(null);
-  const inView = useInView(ref, { once: true, margin: "-100px" });
-
   return (
-    <Container
-      ref={ref}
-      variants={containerVariants}
-      initial="hidden"
-      animate={inView ? "visible" : "hidden"}
-    >
-      <Title variants={titleVariants}>How to Install Our <span>App</span></Title>
-      <Subtitle variants={subtitleVariants}>
+    <Container>
+      <Title>How to Install Our <span>App</span></Title>
+      <Subtitle>
         Getting started is quick and easy! Follow these simple steps to install and start using MyBindle today.
       </Subtitle>
-      <StepsRow variants={stepsRowVariants} initial="hidden" animate={inView ? "visible" : "hidden"}>
-        <Step variants={stepVariants}>
-          <StepNumber $active variants={stepVariants}>01</StepNumber>
+      <StepsRow>
+        <Step>
+          <StepNumber $active>01</StepNumber>
         </Step>
         <Line />
-        <Step variants={stepVariants}>
-          <StepNumber variants={stepVariants}>02</StepNumber>
+        <Step>
+          <StepNumber>02</StepNumber>
         </Step>
         <Line />
-        <Step variants={stepVariants}>
-          <StepNumber variants={stepVariants}>03</StepNumber>
+        <Step>
+          <StepNumber>03</StepNumber>
         </Step>
       </StepsRow>
-      <CardsRow variants={cardsRowVariants} initial="hidden" animate={inView ? "visible" : "hidden"}>
-        <Card variants={cardVariants} whileHover={{ scale: 1.035, y: -10, boxShadow: "0 16px 48px 0 rgba(233,102,92,0.16), 0 2px 8px 0 rgba(0,0,0,0.08)", border: "1.5px solid #e9665c33" }}>
+      <CardsRow>
+        <Card>
           <CardTitle>Download</CardTitle>
           <CardDesc>Open Play Store or App Store</CardDesc>
         </Card>
-        <Card variants={cardVariants} whileHover={{ scale: 1.035, y: -10, boxShadow: "0 16px 48px 0 rgba(233,102,92,0.16), 0 2px 8px 0 rgba(0,0,0,0.08)", border: "1.5px solid #e9665c33" }}>
+        <Card>
           <CardTitle>Install App</CardTitle>
           <CardDesc>The app will install automatically.</CardDesc>
         </Card>
-        <Card variants={cardVariants} whileHover={{ scale: 1.035, y: -10, boxShadow: "0 16px 48px 0 rgba(233,102,92,0.16), 0 2px 8px 0 rgba(0,0,0,0.08)", border: "1.5px solid #e9665c33" }}>
+        <Card>
           <CardTitle>Ready to Use</CardTitle>
           <CardDesc>Sign up or log in to start exploring!</CardDesc>
         </Card>
