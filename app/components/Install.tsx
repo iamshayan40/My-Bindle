@@ -175,7 +175,7 @@ const CardsRow = styled.div`
 const Card = styled.div`
   background: #fff;
   border-radius: 18px;
-  box-shadow: 0 8px 32px 0 rgba(233,102,92,0.10), 0 2px 8px 0 rgba(0,0,0,0.06);
+  box-shadow: 0 8px 32px 0 rgba(233,102,92,0.15), 0 2px 8px 0 rgba(0,0,0,0.06);
   border: 1.5px solid #ececec;
   padding: clamp(24px, 3vw, 30px) clamp(24px, 3vw, 34px);
   width: clamp(280px, 30%, 350px);
@@ -187,6 +187,44 @@ const Card = styled.div`
   position: relative;
   overflow: hidden;
   margin-bottom: 0;
+  transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
+  cursor: pointer;
+  
+  &:before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: linear-gradient(135deg, 
+      rgba(233, 102, 92, 0.15),
+      rgba(233, 102, 92, 0.1),
+      rgba(233, 102, 92, 0.05),
+      transparent
+    );
+    opacity: 0;
+    z-index: -2;
+    transition: opacity 0.3s ease;
+  }
+
+  &:after {
+    content: '';
+    position: absolute;
+    inset: 1px;
+    border-radius: calc(18px - 1px);
+    background: rgba(255, 255, 255, 0.95);
+    z-index: -1;
+    transition: all 0.4s ease;
+  }
+
+  &:hover {
+    box-shadow: 0 12px 30px 0 rgba(233,102,92,0.25), 0 4px 12px 0 rgba(233,102,92,0.15);
+    border: 1.5px solid rgba(233,102,92,0.3);
+    transform: translateY(-5px) scale(1.01);
+    
+    &::before {
+      opacity: 1;
+    }
+  }
 
   @media (max-width: 900px) {
     width: 100%;

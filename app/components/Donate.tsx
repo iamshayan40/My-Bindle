@@ -1,6 +1,8 @@
 "use client";
 import styled from "styled-components";
 import Image from "next/image"; // Import Image component for Next.js optimized images
+import { useEffect, useRef } from "react";
+import gsap from "gsap";
 
 const DonateSection = styled.section`
   background-color: #ff594f;
@@ -139,11 +141,33 @@ const DonateButton = styled.button`
   cursor: pointer;
   transition: all 0.3s ease;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  position: relative;
+  overflow: hidden;
 
   &:hover {
     background-color: #f0f0f0;
     box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
     transform: translateY(-2px);
+  }
+
+  &:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      120deg,
+      transparent,
+      rgba(255, 255, 255, 0.3),
+      transparent
+    );
+    transition: 0.5s;
+  }
+
+  &:hover:before {
+    left: 100%;
   }
 
   @media (max-width: 768px) {
@@ -179,14 +203,14 @@ const ImageColumn = styled.div`
   }
 
   @media (max-width: 480px) {
-    min-height: 160px;
+    min-height: 90px;
     margin-bottom: 1.5rem;
   }
 `;
 
 
 const StyledImage = styled(Image)`
-  width: 100%;
+  width: auto;
   height: auto;
   max-width: 700px;
   object-fit: contain;
@@ -196,22 +220,49 @@ const StyledImage = styled(Image)`
   left: 50%;
   transform: translateX(-65%);
 
-  @media (min-width: 1440px) {
-    max-width: 750px;
-    bottom: -100px;
-  }
-
-  @media (max-width: 1200px) {
-    max-width: 600px;
-  }
-
   @media (max-width: 768px) {
-    max-width: 90%;
+    max-width: none;
+    width: auto;
+    height: 350px;
+    margin-left: 2rem;
+  }
+
+  @media (max-width: 480px) {
+    height: 300px; // aur chhoti screen pe aur bhi bada
   }
 `;
 
 
+
 export default function Donate() {
+  const buttonRef = useRef(null);
+
+  useEffect(() => {
+    const tl = gsap.timeline();
+    
+    tl.fromTo(buttonRef.current,
+      {
+        opacity: 0,
+        scale: 0.5,
+        y: 30
+      },
+      {
+        opacity: 1,
+        scale: 1,
+        y: 0,
+        duration: 1,
+        ease: "elastic.out(1.2, 0.5)",
+        boxShadow: "0 0 20px rgba(255,255,255,0.5)",
+        onComplete: () => {
+          gsap.to(buttonRef.current, {
+            boxShadow: "0 5px 15px rgba(231, 79, 69, 0.3)",
+            duration: 1
+          });
+        }
+      }
+    );
+  }, []);
+
   return (
     <DonateSection>
       <ContentColumn>
@@ -224,15 +275,15 @@ export default function Donate() {
           Your generosity can change lives every donation brings hope, support,
           and a brighter future. Give today and make a difference!
         </Description>
-        <DonateButton>Donate Now</DonateButton>
+        <DonateButton ref={buttonRef}>Donate Now</DonateButton>
       </ContentColumn>
       <ImageColumn>
         <StyledImage
           src="/Donate Section/donate.svg"
           alt="Donation Illustration"
-          width={700} // Keep original Next.js Image width/height props for optimization
-          height={600} // Keep original Next.js Image width/height props for optimization
-          priority // Prioritize loading as it's above the fold
+          width={700}
+          height={600}
+          priority
         />
       </ImageColumn>
     </DonateSection>

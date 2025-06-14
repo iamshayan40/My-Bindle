@@ -12,6 +12,15 @@ const FeaturesSection = styled.section`
   position: relative;
   overflow: hidden;
 
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23e9665c' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    opacity: 0.1;
+    z-index: 0;
+  }
+
   @media (max-width: 1200px) {
     padding: 0 clamp(1rem, 5vw, 6rem);
   }
@@ -60,13 +69,25 @@ const ImageSection = styled(motion.div)`
     position: absolute;
     width: 80%;
     height: 80%;
-    background: radial-gradient(circle, rgba(231, 79, 69, 0.1) 0%, transparent 70%);
+    background: radial-gradient(circle, rgba(231, 79, 69, 0.15) 0%, transparent 70%);
     border-radius: 50%;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -30%);
     filter: blur(40px);
     z-index: -1;
+    animation: pulse 4s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% {
+      transform: translate(-50%, -30%) scale(1);
+      opacity: 0.15;
+    }
+    50% {
+      transform: translate(-50%, -30%) scale(1.1);
+      opacity: 0.2;
+    }
   }
 
   @media (max-width: 1200px) {
@@ -196,6 +217,14 @@ const FeatureTitle = styled.h3`
   z-index: 1;
   transition: transform 0.3s ease;
 
+  span {
+    transition: transform 0.3s ease;
+  }
+
+  &:hover span {
+    transform: scale(1.2) rotate(10deg);
+  }
+
   svg {
     width: clamp(1.25rem, 1.75vw, 1.5rem);
     height: clamp(1.25rem, 1.75vw, 1.5rem);
@@ -227,8 +256,8 @@ const FeatureCard = styled(motion.div)`
   padding: clamp(1rem, 1.5vw, 1.2rem);
   border-radius: 1rem;
   box-shadow: 
-    5px 10px 20px rgba(0, 0, 0, 0.08),
-    0 0 0 1px rgba(231, 79, 69, 0.05);
+    5px 10px 20px rgba(233, 102, 92, 0.15),
+    0 0 0 1px rgba(231, 79, 69, 0.1);
   display: flex;
   flex-direction: column;
   gap: clamp(0.375rem, 0.75vw, 0.5rem);
@@ -236,6 +265,8 @@ const FeatureCard = styled(motion.div)`
   isolation: isolate;
   transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
   cursor: pointer;
+  transform-style: preserve-3d;
+  perspective: 1000px;
   
   &:before {
     content: '';
@@ -243,9 +274,9 @@ const FeatureCard = styled(motion.div)`
     inset: 0;
     border-radius: inherit;
     background: linear-gradient(135deg, 
-      rgba(233, 102, 92, 0.08),
-      rgba(255, 155, 100, 0.06),
-      rgba(255, 177, 113, 0.03),
+      rgba(233, 102, 92, 0.15),
+      rgba(233, 102, 92, 0.1),
+      rgba(233, 102, 92, 0.05),
       transparent
     );
     opacity: 0;
@@ -264,12 +295,20 @@ const FeatureCard = styled(motion.div)`
   }
 
   &:hover {
-    box-shadow: 0 8px 20px 0 rgba(233,102,92,0.08), 0 2px 8px 0 rgba(0,0,0,0.03);
-    border: 1.5px solid #e9665c20;
-    transform: translateY(-5px) scale(1.01);
+    box-shadow: 0 12px 30px 0 rgba(233,102,92,0.25), 0 4px 12px 0 rgba(233,102,92,0.15);
+    border: 1.5px solid rgba(233,102,92,0.3);
+    transform: translateY(-5px) scale(1.01) rotateX(5deg);
     
     &::before {
       opacity: 1;
+    }
+
+    ${FeatureTitle} {
+      transform: translateZ(20px);
+    }
+
+    ${FeatureDescription} {
+      transform: translateZ(10px);
     }
   }
 
