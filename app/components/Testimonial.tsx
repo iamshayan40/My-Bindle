@@ -208,15 +208,16 @@ const CarouselContent = styled.div`
 `;
 
 const TestimonialCard = styled.div`
-  background: #f7f7f7;
+  background: #FDFDFD;
   border-radius: 15px;
   padding: 1rem;
   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.02);
+  margin-bottom: 1rem;
   display: flex;
   flex-direction: column;
   text-align: left;
   position: relative;
-  box-sizing: border-box;
+  box-sizing: border-sizing;
   overflow: hidden;
   border: 1px solid transparent;
   transform: translateZ(0);
@@ -224,10 +225,12 @@ const TestimonialCard = styled.div`
 
   @media (max-width: 768px) {
     padding: 0.9rem;
+    margin-bottom: 1.2rem;
   }
 
   @media (max-width: 480px) {
     padding: 0.8rem;
+    margin-bottom: 1.5rem;
   }
 `;
 
